@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="noback_doctrine_orm_value_object.cache_dir">%kernel.cache_dir%/doctrine_orm_object_value</parameter>
+    </parameters>
+    <services>
+
+        <service id="noback_doctrine_orm_value_object.metadata_factory"
+                 class="Metadata\MetadataFactory">
+            <call method="setCache">
+                <argument type="service" id="noback_doctrine_orm_value_object.metadata_cache"/>
+            </call>
+            <argument type="service" id="noback_doctrine_orm_value_object.annotation_driver"/>
+            <argument>Noback\DoctrineOrmValueObject\Metadata\ClassHierarchyMetadata</argument>
+            <argument>%kernel.debug%</argument>
+        </service>
+
+        <service id="noback_doctrine_orm_value_object.metadata_cache"
+                 class="Metadata\Cache\FileCache"
+                 public="false">
+            <argument>%noback_doctrine_orm_value_object.cache_dir%</argument>
+        </service>
+
+        <service id="noback_doctrine_orm_value_object.annotation_driver"
+                 class="Noback\DoctrineOrmValueObject\Metadata\Driver\AnnotationDriver"
+                 public="false">
+            <argument type="service" id="annotation_reader"/>
+        </service>
+
+        <service id="noback_doctrine_orm_value_object.load_mapping_event_subscriber"
+                 class="Noback\DoctrineOrmValueObject\EventListener\AddValueObjectMappingEventSubscriber">
+            <tag name="doctrine.event_subscriber"/>
+            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+            <argument type="service" id="annotation_reader"/>
+            <argument type="service" id="noback_doctrine_orm_value_object.value_object_mapping_driver" />
+        </service>
+
+        <service id="noback_doctrine_orm_value_object.store_value_objects_event_listener"
+                 class="Noback\DoctrineOrmValueObject\EventListener\StoreValueObjectsEventListener">
+            <tag name="doctrine.event_subscriber"/>
+            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+        </service>
+
+        <service id="noback_doctrine_orm_value_object.load_value_objects_event_listener"
+                 class="Noback\DoctrineOrmValueObject\EventListener\LoadValueObjectsEventListener">
+            <tag name="doctrine.event_subscriber"/>
+            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+        </service>
+
+        <service id="noback_doctrine_orm_value_object.value_object_mapping_driver"
+                 class="Noback\DoctrineOrmValueObject\Mapping\AnnotationDriver"
+                 public="false">
+            <argument type="service" id="annotation_reader"/>
+        </service>
+
+    </services>
+</container>

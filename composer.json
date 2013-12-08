@@ -1,0 +1,11 @@
+{
+    "name": "matthiasnoback/doctrine-orm-value-object-bundle",
+    "type": "symfony-bundle",
+    "require": {
+        "symfony/framework-bundle": "2.*"
+    },
+    "target-dir": "Noback/Bundle/DoctrineOrmValueObjectBundle",
+    "autoload": {
+        "psr-0" : { "Noback\\Bundle\\DoctrineOrmValueObjectBundle" : "" }
+    }
+}
