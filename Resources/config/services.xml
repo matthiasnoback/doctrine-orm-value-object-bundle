@@ -37,10 +37,15 @@
             <argument type="service" id="noback_doctrine_orm_value_object.value_object_mapping_driver" />
         </service>
 
+        <service id="noback_doctrine_orm_value_object.value_object_to_entity_synchronizer"
+                 class="Noback\DoctrineOrmValueObject\Synchronizer\ValueObjectToEntitySynchronizer">
+            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+        </service>
+
         <service id="noback_doctrine_orm_value_object.store_value_objects_event_listener"
                  class="Noback\DoctrineOrmValueObject\EventListener\StoreValueObjectsEventListener">
             <tag name="doctrine.event_subscriber"/>
-            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+            <argument type="service" id="noback_doctrine_orm_value_object.value_object_to_entity_synchronizer"/>
         </service>
 
         <service id="noback_doctrine_orm_value_object.load_value_objects_event_listener"

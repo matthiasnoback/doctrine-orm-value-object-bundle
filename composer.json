@@ -1,8 +1,20 @@
 {
     "name": "matthiasnoback/doctrine-orm-value-object-bundle",
     "type": "symfony-bundle",
+    "description": "Bundle for integrating the doctrine-orm-value-object library in a Symfony2 project",
+    "keywords": ["Doctrine ORM","value object"],
+    "homepage": "http://github.com/matthiasnoback/doctrine-orm-value-object-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthias Noback",
+            "email": "matthiasnoback@gmail.com",
+            "homepage": "http://php-and-symfony.matthiasnoback.nl"
+        }
+    ],
     "require": {
-        "symfony/framework-bundle": "2.*"
+        "symfony/framework-bundle": "2.*",
+        "matthiasnoback/doctrine-orm-value-object": "dev-master"
     },
     "target-dir": "Noback/Bundle/DoctrineOrmValueObjectBundle",
     "autoload": {
