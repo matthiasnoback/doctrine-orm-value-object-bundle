@@ -14,9 +14,14 @@ class NobackDoctrineOrmValueObjectExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
 
-        $cacheDirectory = $container->getParameterBag()->resolveValue(
-            $container->getParameter('noback_doctrine_orm_value_object.cache_dir')
+        $processedConfig = $this->processConfiguration(new Configuration(), $config);
+
+        $cacheDirectory = $container->getParameterBag()->resolveValue($processedConfig['metadata_cache_dir']);
+        $container->setParameter(
+            'noback_doctrine_orm_value_object.cache_dir',
+            $cacheDirectory
         );
+
         if (!is_dir($cacheDirectory)) {
             mkdir($cacheDirectory, 0777, true);
         }
