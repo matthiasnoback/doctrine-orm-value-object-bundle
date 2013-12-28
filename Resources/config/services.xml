@@ -2,9 +2,6 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    <parameters>
-        <parameter key="noback_doctrine_orm_value_object.cache_dir">%kernel.cache_dir%/doctrine_orm_object_value</parameter>
-    </parameters>
     <services>
 
         <service id="noback_doctrine_orm_value_object.metadata_factory"
@@ -38,7 +35,8 @@
         </service>
 
         <service id="noback_doctrine_orm_value_object.value_object_to_entity_synchronizer"
-                 class="Noback\DoctrineOrmValueObject\Synchronizer\ValueObjectToEntitySynchronizer">
+                 class="Noback\DoctrineOrmValueObject\Synchronizer\ValueObjectToEntitySynchronizer"
+                 public="false">
             <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
         </service>
 
@@ -48,10 +46,16 @@
             <argument type="service" id="noback_doctrine_orm_value_object.value_object_to_entity_synchronizer"/>
         </service>
 
+        <service id="noback_doctrine_orm_value_object.entity_to_value_object_synchronizer"
+                 class="Noback\DoctrineOrmValueObject\Synchronizer\EntityToValueObjectSynchronizer"
+                 public="false">
+            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+        </service>
+
         <service id="noback_doctrine_orm_value_object.load_value_objects_event_listener"
                  class="Noback\DoctrineOrmValueObject\EventListener\LoadValueObjectsEventListener">
             <tag name="doctrine.event_subscriber"/>
-            <argument type="service" id="noback_doctrine_orm_value_object.metadata_factory"/>
+            <argument type="service" id="noback_doctrine_orm_value_object.entity_to_value_object_synchronizer"/>
         </service>
 
         <service id="noback_doctrine_orm_value_object.value_object_mapping_driver"
